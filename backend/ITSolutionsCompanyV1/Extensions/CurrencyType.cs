@@ -7,7 +7,7 @@ namespace ITSolutionsCompanyV1.Extensions
 {
     public static class CurrencyType
     {
-        public const string Euro = "Euro";
-        public const string Rsd = "Rsd";
+        public const string EUR = "EUR";
+        public const string RSD = "RSD";
     }
 }

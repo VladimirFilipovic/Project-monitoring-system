@@ -12,11 +12,12 @@ namespace ITSolutionsCompanyV1.Models
         /// <summary>
         /// Indicator whether the user account is active or disabled
         /// </summary>
-        public bool AccountIsActive { get; set; } = true;
+        public bool AccountIsActive { get; set; } = true; //TODO: setter
         public byte[] UserImage { get; set; }
         public ApplicationUser(byte[] userImage) : base()
         {
             UserImage = userImage;
         }
+
     }
 }

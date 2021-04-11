@@ -12,7 +12,11 @@ namespace ITSolutionsCompanyV1.Models
         public decimal Salary { get; set; }  //TODO: this cannot be below < 0
         public DateTime StartDateOfContract { get; set; }
         public DateTime EndDateOfContract { get; set; } //TODO: this cannot be larger than start date
-        public Employee(decimal salary, DateTime startDateOfContract, DateTime endDateOfContract) : base()
+        
+        public List<Request>? Requests { get; set; }
+        public List<Task>? Tasks { get; set; }
+
+        public Employee(decimal salary, DateTime startDateOfContract, DateTime endDateOfContract, byte[] userImage) : base(userImage)
         {
             Salary = salary;
             StartDateOfContract = startDateOfContract;

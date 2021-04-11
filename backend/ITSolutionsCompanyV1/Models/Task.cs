@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,6 +12,9 @@ namespace ITSolutionsCompanyV1.Models
         public string Name { get; set; }
         public bool Completed { get; set; }
         public string Description { get; set; }
+
+        public List<EmployeeTask>? EmployeeTasks { get; set; }
+
         public Task(Guid id, string name, string description)
         {
             Id = id;

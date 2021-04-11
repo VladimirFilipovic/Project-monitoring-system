@@ -12,7 +12,10 @@ namespace ITSolutionsCompanyV1.Models
         public string CompanyName { get; set; }
         [MaxLength(8)]
         public string Pib { get; set; } //TODO: range 10000001-99999999
-        public Client(string companyName, string pib) : base()
+        
+        public List<Request>? Requests { get; set; }
+
+        public Client(string companyName, string pib, byte[] userImage) : base(userImage)
         {
             CompanyName = companyName;
             Pib = pib;

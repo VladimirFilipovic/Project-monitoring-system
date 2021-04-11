@@ -8,7 +8,6 @@ namespace ITSolutionsCompanyV1.Models
 {
     public class Documentation
     {
-        [Key]
         public Guid Id { get; set; }
         [MaxLength(200)]
         public string Name { get; set; }
