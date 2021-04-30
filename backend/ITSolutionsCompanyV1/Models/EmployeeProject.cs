@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace ITSolutionsCompanyV1.Models
 {
-    public class EmployeeTask
+    public class EmployeeProject
     {
-        //TODO: check whether the keys are okay
+        public string RoleOnProject { get; set; } //TODO check whether the role is in ProjectRoles
         public Guid EmployeeId { get; set; }
         public Employee Employee { get; set; }
-        public Guid TaskId { get; set; }
-        public Task Task { get; set; }
+        public Guid ProjectId { get; set; }
+        public Project Project { get; set; }
         public bool Deleted { get; set; }
     }
 }

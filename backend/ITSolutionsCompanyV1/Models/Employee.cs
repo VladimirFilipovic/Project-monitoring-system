@@ -10,14 +10,18 @@ namespace ITSolutionsCompanyV1.Models
     public class Employee : ApplicationUser
     {   
         public decimal Salary { get; set; }  //TODO: this cannot be below < 0
-        public DateTime StartDateOfContract { get; set; }
+        public DateTime? StartDateOfContract { get; set; }
         public DateTime EndDateOfContract { get; set; } //TODO: this cannot be larger than start date
-        
+        public int NumberOfActiveProjects { get; set;} //TODO => 0
         public List<Request>? Requests { get; set; }
-        public List<Task>? Tasks { get; set; }
+        public List<EmployeeTask>? EmployeeTasks { get; set; }
+        public List<EmployeeProject>? EmployeeProjects { get; set; }
+        public List<Documentation>? Documentation { get; set; }
 
-        public Employee(decimal salary, DateTime startDateOfContract, DateTime endDateOfContract, byte[] userImage) : base(userImage)
+        public Employee() : base() { }
+        public Employee(decimal salary, DateTime? startDateOfContract, DateTime endDateOfContract, string username, string email, string phoneNumber) : base(username, email, phoneNumber)
         {
+            //TODO: check nulls for dates if null then dont asign -> dont throw error
             Salary = salary;
             StartDateOfContract = startDateOfContract;
             EndDateOfContract = endDateOfContract;

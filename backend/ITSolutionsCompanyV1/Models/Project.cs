@@ -9,9 +9,16 @@ namespace ITSolutionsCompanyV1.Models
     public class Project
     {
         public Guid Id { get; set; }
-        [MaxLength(200)]
         public string Name { get; set; }
+        public bool IsCompleted { get; set; }
         public DateTime Deadline { get; set; } //TODO: cannot be < present date (date when insert was made)
+        public bool Deleted { get; set; }
+        public List<Payment>? Payments { get; set; }
+        public List<Task>? Tasks { get; set; }
+        public List<Demo> Demos { get; set; }
+        public List<EmployeeProject>? EmployeeProjects { get; set; }
+
+
         public Project(Guid id, string name, DateTime deadline)
         {
             Id = id;

@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ITSolutionsCompanyV1.Models;
+using UserService.Data;
 
 namespace ITSolutionsCompanyV1
 {
@@ -40,7 +41,7 @@ namespace ITSolutionsCompanyV1
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -51,19 +52,17 @@ namespace ITSolutionsCompanyV1
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseAuthentication();
+            MyIdentityDataInitializer.SeedUsersAndRoles(userManager, roleManager);
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
-    
-
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
+               /* endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
+                endpoints.MapRazorPages();*/
             });
         }
     }

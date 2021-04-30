@@ -7,12 +7,37 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20210418154841_Initial Migration.cs" />
+    <Compile Remove="Migrations\20210418154841_Initial Migration.Designer.cs" />
+    <Compile Remove="Migrations\20210418155216_Initial Migration.cs" />
+    <Compile Remove="Migrations\20210418155216_Initial Migration.Designer.cs" />
+    <Compile Remove="Migrations\20210418155333_Initial Migration.cs" />
+    <Compile Remove="Migrations\20210418155333_Initial Migration.Designer.cs" />
+    <Compile Remove="Migrations\20210418160114_Initial Migration.cs" />
+    <Compile Remove="Migrations\20210418160114_Initial Migration.Designer.cs" />
+    <Compile Remove="Migrations\20210418160333_Initial Migration.cs" />
+    <Compile Remove="Migrations\20210418160333_Initial Migration.Designer.cs" />
+    <Compile Remove="Migrations\20210418161933_Initial Migration.cs" />
+    <Compile Remove="Migrations\20210418161933_Initial Migration.Designer.cs" />
+    <Compile Remove="Migrations\20210418162427_Initial Migration.cs" />
+    <Compile Remove="Migrations\20210418162427_Initial Migration.Designer.cs" />
+    <Compile Remove="Migrations\20210430113623_soft-delete property.cs" />
+    <Compile Remove="Migrations\20210430113623_soft-delete property.Designer.cs" />
+    <Compile Remove="Migrations\20210430113957_soft-delete property.cs" />
+    <Compile Remove="Migrations\20210430113957_soft-delete property.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DataAnnotationsExtensions" Version="5.0.1.27" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\SqlTriggers\" />
   </ItemGroup>
 
 </Project>

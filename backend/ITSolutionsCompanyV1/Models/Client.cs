@@ -8,14 +8,12 @@ namespace ITSolutionsCompanyV1.Models
 {
     public class Client : ApplicationUser
     {
-        [MaxLength(500)]
         public string CompanyName { get; set; }
-        [MaxLength(8)]
         public string Pib { get; set; } //TODO: range 10000001-99999999
-        
         public List<Request>? Requests { get; set; }
-
-        public Client(string companyName, string pib, byte[] userImage) : base(userImage)
+        public List<Payment>? Payment { get; set; }
+        public Client() : base() { }
+        public Client(string companyName, string pib, string username, string email, string phoneNumber) : base(username, email, phoneNumber)
         {
             CompanyName = companyName;
             Pib = pib;

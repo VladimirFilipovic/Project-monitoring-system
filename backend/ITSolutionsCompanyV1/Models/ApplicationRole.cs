@@ -12,8 +12,9 @@ namespace ITSolutionsCompanyV1.Models
         /// <summary>
         /// Descripton of a given role
         /// </summary>
-        [MaxLength(500)]
         public string Description { get; set; }
+        public bool Deleted { get; set; }
+
 
         private ApplicationRole() : base()
         {

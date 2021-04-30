@@ -8,16 +8,20 @@ namespace ITSolutionsCompanyV1.Models
 {
     public class ApplicationUser : IdentityUser<Guid>
     {
-
         /// <summary>
         /// Indicator whether the user account is active or disabled
         /// </summary>
         public bool AccountIsActive { get; set; } = true; //TODO: setter
-        public byte[] UserImage { get; set; }
-        public ApplicationUser(byte[] userImage) : base()
-        {
-            UserImage = userImage;
-        }
+        public bool Deleted { get; set; }
 
+        //public byte[] UserImage { get; set; } 
+        //TODO: add navigation property to claims
+        public ApplicationUser() { }
+        public ApplicationUser(string username, string email, string phoneNumber) : base(username)
+        {
+            //UserImage = userImage;
+            Email = email;
+            PhoneNumber = phoneNumber;
+        }
     }
 }
