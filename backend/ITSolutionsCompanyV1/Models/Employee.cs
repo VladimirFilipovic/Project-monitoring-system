@@ -19,7 +19,7 @@ namespace ITSolutionsCompanyV1.Models
         public List<Documentation>? Documentation { get; set; }
 
         public Employee() : base() { }
-        public Employee(decimal salary, DateTime? startDateOfContract, DateTime endDateOfContract, string username, string email, string phoneNumber) : base(username, email, phoneNumber)
+        public Employee(decimal salary, DateTime? startDateOfContract, DateTime endDateOfContract,Guid id, string username, string email, string phoneNumber) : base(id, username, email, phoneNumber)
         {
             //TODO: check nulls for dates if null then dont asign -> dont throw error
             Salary = salary;

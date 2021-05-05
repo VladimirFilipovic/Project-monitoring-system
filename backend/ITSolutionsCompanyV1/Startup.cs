@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ITSolutionsCompanyV1.Models;
 using UserService.Data;
+using ITSolutionsCompanyV1.Data.Extensions;
 
 namespace ITSolutionsCompanyV1
 {
@@ -54,6 +55,7 @@ namespace ITSolutionsCompanyV1
             }
             app.UseAuthentication();
             MyIdentityDataInitializer.SeedUsersAndRoles(userManager, roleManager);
+            app.SeedData(Configuration);
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();

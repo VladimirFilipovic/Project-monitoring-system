@@ -4,14 +4,16 @@ using ITSolutionsCompanyV1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ITSolutionsCompanyV1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210504170931_Add Seeding Tracking")]
+    partial class AddSeedingTracking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -218,9 +220,6 @@ namespace ITSolutionsCompanyV1.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Version")
                         .IsRequired()
                         .HasColumnType("nvarchar(30)")
@@ -229,8 +228,6 @@ namespace ITSolutionsCompanyV1.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
-
-                    b.HasIndex("ProjectId");
 
                     b.ToTable("Documentation");
                 });
@@ -244,9 +241,7 @@ namespace ITSolutionsCompanyV1.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Deleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<string>("RoleOnProject")
                         .IsRequired()
@@ -285,8 +280,7 @@ namespace ITSolutionsCompanyV1.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)")
-                        .HasMaxLength(10);
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
@@ -298,9 +292,7 @@ namespace ITSolutionsCompanyV1.Migrations
                         .HasDefaultValue("EUR");
 
                     b.Property<DateTime>("Date")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
@@ -330,9 +322,7 @@ namespace ITSolutionsCompanyV1.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsCompleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -394,9 +384,7 @@ namespace ITSolutionsCompanyV1.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Completed")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
@@ -573,12 +561,6 @@ namespace ITSolutionsCompanyV1.Migrations
                     b.HasOne("ITSolutionsCompanyV1.Models.Employee", "Employee")
                         .WithMany("Documentation")
                         .HasForeignKey("EmployeeId");
-
-                    b.HasOne("ITSolutionsCompanyV1.Models.Project", "Project")
-                        .WithMany("Documentation")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ITSolutionsCompanyV1.Models.EmployeeProject", b =>

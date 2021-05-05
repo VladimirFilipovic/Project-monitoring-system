@@ -37,7 +37,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Data\SeedData\SeedScripts\" />
     <Folder Include="Data\SqlTriggers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\SeedData\SeedScripts\InsertSeedData.sql" />
   </ItemGroup>
 
 </Project>

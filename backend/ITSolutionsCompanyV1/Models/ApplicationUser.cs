@@ -23,5 +23,12 @@ namespace ITSolutionsCompanyV1.Models
             Email = email;
             PhoneNumber = phoneNumber;
         }
+        public ApplicationUser(Guid id, string username, string email, string phoneNumber) : base(username)
+        {
+            //UserImage = userImage;
+            Id = id;
+            Email = email;
+            PhoneNumber = phoneNumber;
+        }
     }
 }

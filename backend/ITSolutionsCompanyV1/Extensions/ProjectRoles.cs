@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace ITSolutionsCompanyV1.Extensions
 {
+    //TODO extension methods to check roles -> somestring.IsProjectRole()...https://www.tutorialsteacher.com/csharp/csharp-extension-method
     public static class ProjectRoles
     {
         public static string DEVELOPER = "Developer"; 

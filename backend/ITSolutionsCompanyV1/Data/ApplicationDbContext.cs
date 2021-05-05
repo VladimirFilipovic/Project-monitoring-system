@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ITSolutionsCompanyV1.Data.SeedData.Entities;
 using ITSolutionsCompanyV1.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace ITSolutionsCompanyV1.Data
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Request> Requests { get; set; }
         public DbSet<Task> Tasks { get; set; }
+        internal virtual DbSet<SeedingEntry> SeedingEntries { get; set; }
         public DbSet<Documentation> Documentation { get; set; }
         //TODO: refactor model creating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -44,7 +46,11 @@ namespace ITSolutionsCompanyV1.Data
             modelBuilder.Entity<Payment>()
                 .Property(p => p.Currency)
                 .HasDefaultValue("EUR");
-           
+
+            modelBuilder.Entity<Payment>()
+                .Property(p => p.Date)
+                .HasDefaultValueSql("getdate()");
+
             modelBuilder.Entity<Request>()
                 .Property(r => r.DateSent)
                 .HasDefaultValueSql("getdate()");
@@ -52,6 +58,21 @@ namespace ITSolutionsCompanyV1.Data
             modelBuilder.Entity<Request>()
                .Property(r => r.Accepted)
                .HasDefaultValue(false);
+
+            modelBuilder.Entity<SeedingEntry>()
+                .HasKey(s => s.Name);
+
+            modelBuilder.Entity<Project>()
+                .Property(p => p.IsCompleted)
+                .HasDefaultValue(false);
+
+            modelBuilder.Entity<Task>()
+                .Property(t => t.Completed)
+                .HasDefaultValue(false);
+
+            modelBuilder.Entity<EmployeeProject>()
+                .Property(ep => ep.Deleted)
+                .HasDefaultValue(false);
             #endregion
             #region constraints
             /*modelBuilder.Entity<ApplicationUser>()
@@ -99,6 +120,11 @@ namespace ITSolutionsCompanyV1.Data
             modelBuilder.Entity<Payment>()
                 .Property(p => p.Amount)
                 .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Payment>()
+               .Property(p => p.Amount)
+               .HasMaxLength(10);
+
 
             modelBuilder.Entity<Task>()
                 .Property(t => t.Name)

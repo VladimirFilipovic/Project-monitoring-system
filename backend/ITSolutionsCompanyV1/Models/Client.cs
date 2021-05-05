@@ -13,7 +13,7 @@ namespace ITSolutionsCompanyV1.Models
         public List<Request>? Requests { get; set; }
         public List<Payment>? Payment { get; set; }
         public Client() : base() { }
-        public Client(string companyName, string pib, string username, string email, string phoneNumber) : base(username, email, phoneNumber)
+        public Client(string companyName, string pib, Guid id, string username, string email, string phoneNumber) : base(id, username, email, phoneNumber)
         {
             CompanyName = companyName;
             Pib = pib;

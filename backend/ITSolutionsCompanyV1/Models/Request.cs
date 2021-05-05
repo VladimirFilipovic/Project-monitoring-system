@@ -13,7 +13,7 @@ namespace ITSolutionsCompanyV1.Models
         public DateTime? DateSent { get; set; } //TODO: cannot be < present date (date when insert was made)   
         public bool? Accepted { get; set; }
         public bool Deleted { get; set; }
-        public byte[] Specification { get; set; }
+        public byte[] Specification { get; set; } //TODO SIZE RESTRICTION FLUENT API
         public Client Client { get; set; }
         public Employee? Employee { get; set; }
 

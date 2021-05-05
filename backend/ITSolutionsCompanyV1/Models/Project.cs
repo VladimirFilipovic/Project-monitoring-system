@@ -15,9 +15,9 @@ namespace ITSolutionsCompanyV1.Models
         public bool Deleted { get; set; }
         public List<Payment>? Payments { get; set; }
         public List<Task>? Tasks { get; set; }
-        public List<Demo> Demos { get; set; }
+        public List<Demo>? Demos { get; set; }
+        public List<Documentation>? Documentation { get; set; }
         public List<EmployeeProject>? EmployeeProjects { get; set; }
-
 
         public Project(Guid id, string name, DateTime deadline)
         {

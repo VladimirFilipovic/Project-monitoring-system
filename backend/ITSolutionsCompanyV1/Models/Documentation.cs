@@ -17,6 +17,7 @@ namespace ITSolutionsCompanyV1.Models
         public bool Accepted { get; set; }
         public bool Deleted { get; set; }
         public Employee? Employee { get; set; }
+        public Project Project { get; set; }
 
         public Documentation(Guid id, string name, string version, DateTime dateCreated, DateTime? dateModified, byte[] pdf, bool accepted)
         {
