@@ -18,7 +18,7 @@ namespace ITSolutionsCompanyV1.Migrations
             migrationBuilder.AlterColumn<bool>(
                 name: "Deleted",
                 table: "EmployeeProject",
-                nullable: false,
+                nullable: true,
                 defaultValue: false,
                 oldClrType: typeof(bool),
                 oldType: "bit");
@@ -38,7 +38,7 @@ namespace ITSolutionsCompanyV1.Migrations
                 name: "Deleted",
                 table: "EmployeeProject",
                 type: "bit",
-                nullable: false,
+                nullable: true,
                 oldClrType: typeof(bool),
                 oldDefaultValue: false);
         }

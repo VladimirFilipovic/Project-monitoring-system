@@ -10,18 +10,19 @@ namespace ITSolutionsCompanyV1.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public DateTime? DateSent { get; set; } //TODO: cannot be < present date (date when insert was made)   
+        public DateTime? RequestDate { get; set; } //TODO: cannot be < present date (date when insert was made)   
         public bool? Accepted { get; set; }
-        public bool Deleted { get; set; }
+        public bool? Deleted { get; set; }
         public byte[] Specification { get; set; } //TODO SIZE RESTRICTION FLUENT API
-        public Client Client { get; set; }
-        public Employee? Employee { get; set; }
+        public Client? Client { get; set; }
+        //public Guid ProjectId { get; set; }
+        public Project Project { get; set; }
 
-        public Request(Guid id, string name, DateTime? dateSent, bool? accepted, byte[] specification)
+        public Request(Guid id, string name, DateTime? requestDate, bool? accepted, byte[] specification)
         {
             Id = id;
             Name = name;
-            DateSent = dateSent;
+            RequestDate = requestDate;
             Accepted = accepted;
             Specification = specification;
         }

@@ -1,0 +1,230 @@
+--delete project -> all relelations also deleted
+--isCompleted -> Tasks Completed, EmployeeProject deleted
+DROP TRIGGER IF EXISTS trgProjectTasks
+GO
+CREATE TRIGGER trgProjectTasks
+ON Projects
+AFTER UPDATE
+AS
+BEGIN
+--DELETE
+	IF 1 in (select deleted from inserted) --if some row was deleted
+	BEGIN
+		UPDATE Documentation
+		SET Deleted = 1
+		WHERE Documentation.ProjectId IN  
+			(SELECT Id FROM inserted) AND 
+			((SELECT Deleted FROM inserted where Documentation.ProjectId = inserted.Id) >
+			(SELECT Deleted FROM deleted where Documentation.ProjectId = deleted.Id))
+
+		UPDATE Tasks
+		SET Deleted = 1
+		WHERE Tasks.ProjectId IN  
+			(SELECT Id FROM inserted) AND 
+			((SELECT Deleted FROM inserted where Tasks.ProjectId = inserted.Id) >
+			(SELECT Deleted FROM deleted where Tasks.ProjectId = deleted.Id))	
+
+		UPDATE Demos
+		SET Deleted = 1
+		WHERE Demos.ProjectId IN  
+			(SELECT Id FROM inserted) AND 
+			((SELECT Deleted FROM inserted where Demos.ProjectId = inserted.Id) >
+			(SELECT Deleted FROM deleted where Demos.ProjectId = deleted.Id))
+
+		UPDATE Payments
+		SET Deleted = 1
+		WHERE Payments.ProjectId IN  
+			(SELECT Id FROM inserted) AND 
+			((SELECT Deleted FROM inserted where Payments.ProjectId = inserted.Id) >
+			(SELECT Deleted FROM deleted where Payments.ProjectId = deleted.Id))
+		
+		UPDATE EmployeeProject
+		SET Deleted = 1
+		WHERE EmployeeProject.ProjectId IN  
+			(SELECT Id FROM inserted) AND 
+			((SELECT Deleted FROM inserted where EmployeeProject.ProjectId = inserted.Id) >
+			(SELECT Deleted FROM deleted where EmployeeProject.ProjectId = deleted.Id))	
+	END --we dont reverse delete because we dont know whether the entity was already deleted before
+--COMPLETED --project completed -> tasks completed, employee project deleted
+	IF 1 in (select IsCompleted from inserted)
+	BEGIN
+		UPDATE Tasks
+		SET Completed = 1
+		WHERE Tasks.ProjectId IN  
+			(SELECT Id FROM inserted) AND 
+			((SELECT IsCompleted FROM inserted where Tasks.ProjectId = inserted.Id) >
+			(SELECT IsCompleted FROM deleted where Tasks.ProjectId = deleted.Id))	
+
+		UPDATE EmployeeProject
+		SET Deleted = 1
+		WHERE EmployeeProject.ProjectId IN  
+			(SELECT Id FROM inserted) AND 
+			((SELECT IsCompleted FROM inserted where EmployeeProject.ProjectId = inserted.Id) >
+			(SELECT IsCompleted FROM deleted where EmployeeProject.ProjectId = deleted.Id))	
+	END
+END
+/*GO --tests
+update Projects
+set IsCompleted = 0
+where name = 'Project 4'
+
+select * from Documentation
+select * from EmployeeProject
+select * from Demos
+select * from Tasks
+
+update Documentation 
+set Deleted = 0;
+update Projects
+set Deleted = 0;
+update EmployeeProject
+set Deleted = 0;
+update Demos
+set Deleted = 0;
+update Tasks
+set Deleted = 0;
+*/
+
+
+-------------------------------------------------------------------------
+GO
+----------------------------------------------------------------------
+--create request -> send email to manager-----------------------------
+DROP TRIGGER IF EXISTS trgReminder
+GO
+CREATE TRIGGER trgReminder  
+ON Projects
+AFTER INSERT 
+AS  
+   EXEC msdb.dbo.sp_send_dbmail  
+        @profile_name = 'ITSolutions Admin',  
+        @recipients = 'vlada.19982309@gmail.com',  
+        @body = 'New project request',  
+        @subject = 'Request';  
+
+--insert into Projects (Id, Name, Deadline, ClientId, Specification) values(NEWID(),'Project 55', '2021-2-2', 'a22752d6-1ab6-4f16-90a6-8845241a936c', (convert(VARBINARY(max), 'TestCase'))); 
+GO
+----------------------------------------------------------------------
+--insert update EmployeeProject -> Employee ActiveProjects------------
+DROP TRIGGER IF EXISTS trgEmployeeProject;
+GO
+CREATE TRIGGER trgEmployeeProject
+on EmployeeProject
+AFTER INSERT, UPDATE
+AS
+BEGIN
+	declare @EmployeeId uniqueidentifier;
+	declare @EmployeePrev uniqueidentifier;
+	declare @Deleted bit;
+	declare @DeletedPrevious bit;
+
+	declare ep_cursor cursor FAST_FORWARD  for
+	select EmployeeId,Deleted
+	from inserted
+	open ep_cursor
+
+	declare deleted_cursor cursor FAST_FORWARD  for
+	select Deleted, EmployeeId
+	from deleted
+	open deleted_cursor
+	
+	fetch next from deleted_cursor
+		into @DeletedPrevious, @EmployeePrev;
+
+	fetch next from ep_cursor
+		into @EmployeeId,@Deleted;
+			
+	while @@FETCH_STATUS = 0 
+		BEGIN
+			print(@EmployeePrev);
+			IF @EmployeePrev is null --assigned new project to employee
+				BEGIN
+					update AspNetUsers
+					set NumberOfActiveProjects += 1
+					where AspNetUsers.Id = @EmployeeId
+				END
+			ELSE IF update (Deleted) -- deleted is changed from 0 to 1 or vice versa
+				BEGIN
+					if(@Deleted > @DeletedPrevious)  --1 > 0 so its deleted
+						BEGIN
+							update AspNetUsers
+							set NumberOfActiveProjects -= 1
+							where AspNetUsers.Id = @EmployeeId
+						END
+					else if (@Deleted < @DeletedPrevious) --0 < 1 so its active again
+						BEGIN
+							update AspNetUsers
+							set NumberOfActiveProjects += 1
+							where AspNetUsers.Id = @EmployeeId
+						END
+				END--ako je insert odnosno ako je projekat ponovo aktivan
+
+			fetch next from ep_cursor
+				into @EmployeeId,@Deleted;
+			
+			fetch next from deleted_cursor
+				into @DeletedPrevious,@EmployeePrev;
+		END
+	close ep_cursor
+	deallocate ep_cursor
+	close deleted_cursor
+	deallocate deleted_cursor
+END
+
+/*
+--tests
+insert into EmployeeProject (EmployeeId, ProjectId, RoleOnProject, Deleted) 
+values('E06BA72A-3469-4EB3-82C6-606D5E57A807', '7A29074B-29B1-4C30-9C65-E257566DF790', 'Developer', 0); --add employee to project 
+select * from AspNetUsers --should be  1
+
+update EmployeeProject
+set Deleted = 1 
+
+select * from AspNetUsers --should be  0
+
+update EmployeeProject
+set Deleted = 0
+
+select * from AspNetUsers --should be  1 
+--helpers
+select * from Projects
+
+insert into Projects (Id, Name, Deadline, ClientId, Specification) values(NEWID(),'Project 3', '2021-2-2', 'a22752d6-1ab6-4f16-90a6-8845241a936c', (convert(VARBINARY(max), 'TestCase'))); 
+*/
+GO
+----------------------------------------------------------------------
+--Task Completed or Deleted -> EmployeeTask ----------------------
+DROP TRIGGER IF EXISTS trgTaskEmployeeTask
+Go
+CREATE TRIGGER trgTaskEmployeeTask
+ON Tasks
+AFTER UPDATE
+AS
+BEGIN
+	--DELETED 
+	IF 1 in (select deleted from inserted)
+	BEGIN
+		update EmployeeTask
+		set Deleted = 1
+		where (EmployeeTask.TaskId in  (select Id from inserted)) and ((SELECT Deleted FROM inserted where EmployeeTask.TaskId = inserted.Id) >
+			(SELECT Deleted FROM deleted where EmployeeTask.TaskId = deleted.Id))
+	END
+
+	--COMPLETED
+	IF 1 in (select Completed from inserted)
+	BEGIN
+	update EmployeeTask
+		set Deleted = 1
+		where (EmployeeTask.TaskId in  (select Id from inserted)) and ((SELECT Completed FROM inserted where EmployeeTask.TaskId = inserted.Id) >
+			(SELECT Completed FROM deleted where EmployeeTask.TaskId = deleted.Id))
+	END
+END
+/*test
+update Tasks 
+set Completed = 1;
+
+update EmployeeTask 
+set Deleted = 0;
+select * from EmployeeTask
+select * from Tasks */
+GO

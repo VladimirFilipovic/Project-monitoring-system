@@ -1,18 +1,17 @@
 declare @projectGuid uniqueidentifier = 'a22752d6-1ab6-8f16-90a6-8845241a936c';
 declare @task1Guid uniqueidentifier = 'a22452d6-1ab6-8f16-90a6-8845241a936c';
 declare @task2Guid uniqueidentifier = 'a32752d6-1ab6-8f16-90a6-8845241a936c';
+declare @clientGuid uniqueidentifier = 'a22752d6-1ab6-4f16-90a6-8845241a936c';
 
-insert into Projects (Id, Name, Deadline, IsCompleted) values(@projectGuid,'Project 4', '2021-2-2', 0); 
-insert into Projects (Id, Name, Deadline, IsCompleted) values(NEWID(),'Project 5', '2021-2-2', 0); 
+
+insert into Projects (Id, Name, Deadline, ClientId, Specification) values(@projectGuid,'Project 4', '2021-2-2', @clientGuid, (convert(VARBINARY(max), 'TestCase'))); 
+insert into Projects (Id, Name, Deadline, ClientId, Specification) values(NEWID(),'Project 55', '2021-2-2', @clientGuid, (convert(VARBINARY(max), 'TestCase'))); 
 
 insert into Tasks (Id, Name, Description, ProjectId) values (@task1Guid, 'Task1', 'First task', @projectGuid);
 insert into Tasks (Id, Name, Description, ProjectId) values (@task2Guid, 'Task2', 'Second task', @projectGuid);
 
-insert into Requests (Id, Name, ClientId, EmployeeId, Specification) values (NEWID(), 'Req1', 'a22752d6-1ab6-4f16-90a6-8845241a936c', 'e06ba72a-3469-4eb3-82c6-606d5e57a807', (convert(VARBINARY(max), 'TestCase')));
-insert into Requests (Id, Name, ClientId, EmployeeId, Specification) values (NEWID(), 'Req2', 'a22752d6-1ab6-4f16-90a6-8845241a936c', 'e06ba72a-3469-4eb3-82c6-606d5e57a807', (convert(VARBINARY(max), 'TestCase')));
-
-insert into Payments (Id, Amount, Currency, ClientId, ProjectId) values (NEWID(), 100, 'EUR', 'a22752d6-1ab6-4f16-90a6-8845241a936c', @projectGuid);
-insert into Payments (Id, Amount, Currency, ClientId, ProjectId) values (NEWID(), 100, 'EUR', 'a22752d6-1ab6-4f16-90a6-8845241a936c', @projectGuid);
+insert into Payments (Id, Amount, Currency, ClientId, ProjectId) values (NEWID(), 100, 'EUR', @clientGuid, @projectGuid);
+insert into Payments (Id, Amount, Currency, ClientId, ProjectId) values (NEWID(), 100, 'EUR', @clientGuid, @projectGuid);
 
 insert into EmployeeTask (EmployeeId, TaskId) values ('e06ba72a-3469-4eb3-82c6-606d5e57a807', @task1Guid);
 insert into EmployeeTask (EmployeeId, TaskId) values ('e06ba72a-3469-4eb3-82c6-606d5e57a807', @task2Guid);

@@ -18,7 +18,7 @@ namespace ITSolutionsCompanyV1.Data
         public DbSet<Demo> Demos { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Payment> Payments { get; set; }
-        public DbSet<Request> Requests { get; set; }
+       // public DbSet<Request> Requests { get; set; }
         public DbSet<Task> Tasks { get; set; }
         internal virtual DbSet<SeedingEntry> SeedingEntries { get; set; }
         public DbSet<Documentation> Documentation { get; set; }
@@ -52,18 +52,26 @@ namespace ITSolutionsCompanyV1.Data
                 .HasDefaultValueSql("getdate()");
 
             modelBuilder.Entity<Request>()
-                .Property(r => r.DateSent)
+                .Property(r => r.RequestDate)
                 .HasDefaultValueSql("getdate()");
            
             modelBuilder.Entity<Request>()
                .Property(r => r.Accepted)
                .HasDefaultValue(false);
 
+            modelBuilder.Entity<Request>()
+                .Property(p => p.Deleted)
+                .HasDefaultValue(false);
+
             modelBuilder.Entity<SeedingEntry>()
                 .HasKey(s => s.Name);
 
             modelBuilder.Entity<Project>()
                 .Property(p => p.IsCompleted)
+                .HasDefaultValue(false);
+
+            modelBuilder.Entity<Project>()
+                .Property(p => p.Deleted)
                 .HasDefaultValue(false);
 
             modelBuilder.Entity<Task>()
@@ -73,6 +81,7 @@ namespace ITSolutionsCompanyV1.Data
             modelBuilder.Entity<EmployeeProject>()
                 .Property(ep => ep.Deleted)
                 .HasDefaultValue(false);
+
             #endregion
             #region constraints
             /*modelBuilder.Entity<ApplicationUser>()
@@ -86,6 +95,7 @@ namespace ITSolutionsCompanyV1.Data
             modelBuilder.Entity<Client>()
                 .Property(c => c.CompanyName)
                 .HasMaxLength(300);
+
             modelBuilder.Entity<Client>()
                 .Property(c => c.Pib)
                 .HasMaxLength(8);
@@ -107,7 +117,7 @@ namespace ITSolutionsCompanyV1.Data
 
             modelBuilder.Entity<Request>()
                 .Property(r => r.Name)
-                .HasMaxLength(150);
+                .HasMaxLength(200);
 
             modelBuilder.Entity<Project>()
                 .Property(p => p.Name)
@@ -124,7 +134,6 @@ namespace ITSolutionsCompanyV1.Data
             modelBuilder.Entity<Payment>()
                .Property(p => p.Amount)
                .HasMaxLength(10);
-
 
             modelBuilder.Entity<Task>()
                 .Property(t => t.Name)
@@ -160,6 +169,23 @@ namespace ITSolutionsCompanyV1.Data
             modelBuilder.Entity<EmployeeProject>()
                 .HasOne(ep => ep.Project)
                 .WithMany(p => p.EmployeeProjects);
+
+            modelBuilder.Entity<Request>()
+                .HasOne(r => r.Project).WithOne(p => p.Request)
+                .HasForeignKey<Project>(r => r.Id);
+
+            modelBuilder.Entity<Project>().ToTable("Projects");
+            modelBuilder.Entity<Request>().ToTable("Projects");
+
+            modelBuilder.Entity<Project>().Property(p => p.Name)
+                .HasColumnName("Name");
+            modelBuilder.Entity<Request>().Property(p => p.Name)
+                .HasColumnName("Name");
+
+            modelBuilder.Entity<Project>().Property(p => p.Deleted)
+              .HasColumnName("Deleted");
+            modelBuilder.Entity<Request>().Property(p => p.Deleted)
+                .HasColumnName("Deleted");
             #endregion
         }
     }

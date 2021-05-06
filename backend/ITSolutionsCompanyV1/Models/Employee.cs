@@ -13,7 +13,6 @@ namespace ITSolutionsCompanyV1.Models
         public DateTime? StartDateOfContract { get; set; }
         public DateTime EndDateOfContract { get; set; } //TODO: this cannot be larger than start date
         public int NumberOfActiveProjects { get; set;} //TODO => 0
-        public List<Request>? Requests { get; set; }
         public List<EmployeeTask>? EmployeeTasks { get; set; }
         public List<EmployeeProject>? EmployeeProjects { get; set; }
         public List<Documentation>? Documentation { get; set; }

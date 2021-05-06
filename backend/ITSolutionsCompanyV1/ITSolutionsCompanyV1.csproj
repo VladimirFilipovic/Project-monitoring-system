@@ -25,6 +25,24 @@
     <Compile Remove="Migrations\20210430113623_soft-delete property.Designer.cs" />
     <Compile Remove="Migrations\20210430113957_soft-delete property.cs" />
     <Compile Remove="Migrations\20210430113957_soft-delete property.Designer.cs" />
+    <Compile Remove="Migrations\20210505113047_Project Requests one to one.cs" />
+    <Compile Remove="Migrations\20210505113047_Project Requests one to one.Designer.cs" />
+    <Compile Remove="Migrations\20210505115642_Project Requests one to one.cs" />
+    <Compile Remove="Migrations\20210505115642_Project Requests one to one.Designer.cs" />
+    <Compile Remove="Migrations\20210505141452_Project Requests one to one.cs" />
+    <Compile Remove="Migrations\20210505141452_Project Requests one to one.Designer.cs" />
+    <Compile Remove="Migrations\20210505142339_Project Requests one to one.cs" />
+    <Compile Remove="Migrations\20210505142339_Project Requests one to one.Designer.cs" />
+    <Compile Remove="Migrations\20210505145313_Project Requests one to one.cs" />
+    <Compile Remove="Migrations\20210505145313_Project Requests one to one.Designer.cs" />
+    <Compile Remove="Migrations\20210505150351_Project Requests one to one.cs" />
+    <Compile Remove="Migrations\20210505150351_Project Requests one to one.Designer.cs" />
+    <Compile Remove="Migrations\20210505151641_False one.cs" />
+    <Compile Remove="Migrations\20210505151641_False one.Designer.cs" />
+    <Compile Remove="Migrations\20210506075842_Fix.cs" />
+    <Compile Remove="Migrations\20210506075842_Fix.Designer.cs" />
+    <Compile Remove="Migrations\20210506080656_Project Request one to one.cs" />
+    <Compile Remove="Migrations\20210506080656_Project Request one to one.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

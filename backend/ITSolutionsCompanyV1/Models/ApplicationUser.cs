@@ -12,7 +12,7 @@ namespace ITSolutionsCompanyV1.Models
         /// Indicator whether the user account is active or disabled
         /// </summary>
         public bool AccountIsActive { get; set; } = true; //TODO: setter
-        public bool Deleted { get; set; }
+        public bool? Deleted { get; set; }
 
         //public byte[] UserImage { get; set; } 
         //TODO: add navigation property to claims
