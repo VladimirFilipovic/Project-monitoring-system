@@ -9,9 +9,9 @@ namespace ITSolutionsCompanyV1.Models
     {
         //TODO: check whether the keys are okay
         public Guid EmployeeId { get; set; }
-        public Employee Employee { get; set; }
+        public  Employee Employee { get; set; }
         public Guid TaskId { get; set; }
-        public Task Task { get; set; }
+        public  Task Task { get; set; }
         public bool Deleted { get; set; }
     }
 }

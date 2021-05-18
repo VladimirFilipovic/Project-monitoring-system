@@ -15,7 +15,7 @@ namespace ITSolutionsCompanyV1.Models
         public byte[] Exe { get; set; }
         public string Comment { get; set; }
         public bool Deleted { get; set; }
-        public Project Project { get; set; }
+        public virtual Project Project { get; set; }
 
         public Demo(Guid id, string name, DateTime dateCreated, byte[] video, byte[] exe)
         {

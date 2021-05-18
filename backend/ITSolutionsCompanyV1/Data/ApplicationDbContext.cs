@@ -23,6 +23,10 @@ namespace ITSolutionsCompanyV1.Data
         internal virtual DbSet<SeedingEntry> SeedingEntries { get; set; }
         public DbSet<Documentation> Documentation { get; set; }
         //TODO: refactor model creating
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -100,6 +104,9 @@ namespace ITSolutionsCompanyV1.Data
                 .Property(c => c.Pib)
                 .HasMaxLength(8);
 
+            modelBuilder.Entity<Client>()
+                .HasIndex(c => new { c.CompanyName, c.Pib }).IsUnique(true);
+
             modelBuilder.Entity<Employee>()
                 .Property(e => e.Salary)
                 .HasColumnType("decimal(18,2)");
@@ -108,20 +115,33 @@ namespace ITSolutionsCompanyV1.Data
                 .Property(d => d.Name)
                 .HasMaxLength(200);
 
+            modelBuilder.Entity<Demo>()
+                .HasAlternateKey(d => d.Name);
+
             modelBuilder.Entity<Documentation>()
                 .Property(d => d.Name)
                 .HasMaxLength(200);
+
             modelBuilder.Entity<Documentation>()
                .Property(d => d.Version)
                .HasMaxLength(30);
+
+            modelBuilder.Entity<Documentation>()
+               .HasAlternateKey(d => d.Name);
 
             modelBuilder.Entity<Request>()
                 .Property(r => r.Name)
                 .HasMaxLength(200);
 
+            modelBuilder.Entity<Request>()
+               .HasAlternateKey(r => r.Name);
+
             modelBuilder.Entity<Project>()
                 .Property(p => p.Name)
                 .HasMaxLength(200);
+
+            modelBuilder.Entity<Project>()
+               .HasAlternateKey(p => p.Name);
 
             modelBuilder.Entity<EmployeeProject>()
                .Property(ep => ep.RoleOnProject)
@@ -138,6 +158,9 @@ namespace ITSolutionsCompanyV1.Data
             modelBuilder.Entity<Task>()
                 .Property(t => t.Name)
                 .HasMaxLength(300);
+
+            modelBuilder.Entity<Task>()
+               .HasAlternateKey(t => t.Name);
             #endregion
             #region relationships
             /*modelBuilder.Entity<Employee>()

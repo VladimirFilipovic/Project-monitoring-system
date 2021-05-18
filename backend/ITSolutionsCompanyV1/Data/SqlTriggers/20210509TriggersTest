@@ -1,5 +1,6 @@
 --delete project -> all relelations also deleted
 --isCompleted -> Tasks Completed, EmployeeProject deleted
+GO
 DROP TRIGGER IF EXISTS trgProjectTasks
 GO
 CREATE TRIGGER trgProjectTasks
@@ -84,9 +85,6 @@ set Deleted = 0;
 update Tasks
 set Deleted = 0;
 */
-
-
--------------------------------------------------------------------------
 GO
 ----------------------------------------------------------------------
 --create request -> send email to manager-----------------------------
@@ -140,7 +138,7 @@ BEGIN
 			IF @EmployeePrev is null --assigned new project to employee
 				BEGIN
 					update AspNetUsers
-					set NumberOfActiveProjects += 1
+					set set NumberOfActiveProjects = NumberOfActiveProjects + 1
 					where AspNetUsers.Id = @EmployeeId
 				END
 			ELSE IF update (Deleted) -- deleted is changed from 0 to 1 or vice versa
@@ -148,13 +146,13 @@ BEGIN
 					if(@Deleted > @DeletedPrevious)  --1 > 0 so its deleted
 						BEGIN
 							update AspNetUsers
-							set NumberOfActiveProjects -= 1
+							set NumberOfActiveProjects = NumberOfActiveProjects - 1
 							where AspNetUsers.Id = @EmployeeId
 						END
 					else if (@Deleted < @DeletedPrevious) --0 < 1 so its active again
 						BEGIN
 							update AspNetUsers
-							set NumberOfActiveProjects += 1
+							set NumberOfActiveProjects = NumberOfActiveProjects + 1
 							where AspNetUsers.Id = @EmployeeId
 						END
 				END--ako je insert odnosno ako je projekat ponovo aktivan

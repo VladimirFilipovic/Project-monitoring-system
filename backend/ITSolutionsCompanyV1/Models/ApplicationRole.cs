@@ -16,7 +16,7 @@ namespace ITSolutionsCompanyV1.Models
         public bool Deleted { get; set; }
 
 
-        private ApplicationRole() : base()
+        public ApplicationRole() : base()
         {
             Description = "no description";
         }

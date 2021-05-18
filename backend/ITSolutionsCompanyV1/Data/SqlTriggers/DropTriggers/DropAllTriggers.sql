@@ -1,0 +1,4 @@
+DROP TRIGGER IF EXISTS trgProjectTasks
+DROP TRIGGER IF EXISTS trgReminder
+DROP TRIGGER IF EXISTS trgTaskEmployeeTask
+DROP TRIGGER IF EXISTS trgEmployeeProject

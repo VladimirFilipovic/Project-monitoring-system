@@ -13,13 +13,14 @@ namespace ITSolutionsCompanyV1.Models
         public bool IsCompleted { get; set; }
         public DateTime Deadline { get; set; } //TODO: cannot be < present date (date when insert was made)
         public bool? Deleted { get; set; }
-        public List<Payment>? Payments { get; set; }
-        public List<Task>? Tasks { get; set; }
-        public List<Demo>? Demos { get; set; }
-        public List<Documentation>? Documentation { get; set; }
-        public List<EmployeeProject>? EmployeeProjects { get; set; }
-        public Request Request { get; set; }
+        public virtual List<Payment>? Payments { get; set; }
+        public virtual List<Task>? Tasks { get; set; }
+        public virtual List<Demo>? Demos { get; set; }
+        public virtual List<Documentation>? Documentation { get; set; }
+        public virtual List<EmployeeProject>? EmployeeProjects { get; set; }
+        public virtual Request Request { get; set; }
 
+        public Project () { }
         public Project(Guid id, string name, DateTime deadline)
         {
             Id = id;

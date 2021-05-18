@@ -26,7 +26,7 @@ namespace ITSolutionsCompanyV1.Data.Extensions
             });
         }
 
-        public static void SeedData(this IApplicationBuilder app, IConfiguration configuration)
+        public static void ExecuteSqlScripts(this IApplicationBuilder app, IConfiguration configuration, string typeOfScript)
         {
             using (var serviceScope = app.ApplicationServices
                 .GetRequiredService<IServiceScopeFactory>()
@@ -40,7 +40,19 @@ namespace ITSolutionsCompanyV1.Data.Extensions
                     var files = assembly.GetManifestResourceNames();
 
                     var executedSeedings = context.SeedingEntries.ToArray();
-                    var filePrefix = $"{assembly.GetName().Name}.Data.SeedData.SeedScripts.";
+                    var filePrefix = "";
+                    if (typeOfScript == "Triggers")
+                    {
+                        filePrefix = $"{assembly.GetName().Name}.Data.SqlTriggers.";
+                    }
+                    else if (typeOfScript == "SeedData")
+                    {
+                        filePrefix = $"{assembly.GetName().Name}.Data.SeedData.SeedScripts.";
+                    }
+                    else
+                    {
+                        throw new Exception("TypeOfScript must be Triggers or SeedData");
+                    }
                     foreach (var file in files.Where(f => f.StartsWith(filePrefix) && f.EndsWith(".sql"))
                                               .Select(f => new
                                               {
@@ -84,22 +96,13 @@ namespace ITSolutionsCompanyV1.Data.Extensions
                 }
             }
         }
-        public static void AddTriggers(this IApplicationBuilder app, IConfiguration configuration)
+        public static string AddTriggers()
         {
-            using (var serviceScope = app.ApplicationServices
-                .GetRequiredService<IServiceScopeFactory>()
-                .CreateScope())
-            {
-                using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
-                {
-                    context.Database.Migrate();
+           var assembly = typeof(DbContextExtensions).Assembly;
+           var files2 = assembly.GetManifestResourceNames();
 
-                    var assembly = typeof(DbContextExtensions).Assembly;
-                    var files = assembly.GetManifestResourceNames();
-
-                    var executedSeedings = context.SeedingEntries.ToArray();
                     var filePrefix = $"{assembly.GetName().Name}.Data.SqlTriggers.";
-                    foreach (var file in files.Where(f => f.StartsWith(filePrefix) && f.EndsWith(".sql"))
+                    foreach (var file in files2.Where(f => f.StartsWith(filePrefix) && f.EndsWith(".sql"))
                                               .Select(f => new
                                               {
                                                   PhysicalFile = f,
@@ -107,8 +110,6 @@ namespace ITSolutionsCompanyV1.Data.Extensions
                                               })
                                               .OrderBy(f => f.LogicalFile))
                     {
-                        if (executedSeedings.Any(e => e.Name == file.LogicalFile))
-                            continue;
 
                         string command = string.Empty;
                         using (Stream stream = assembly.GetManifestResourceStream(file.PhysicalFile))
@@ -119,28 +120,13 @@ namespace ITSolutionsCompanyV1.Data.Extensions
                             }
                         }
 
-                        if (String.IsNullOrWhiteSpace(command))
+
+                         if (String.IsNullOrWhiteSpace(command))
                             continue;
 
-                        using (var transaction = context.Database.BeginTransaction())
-                        {
-                            try
-                            {
-                                context.Database.ExecuteSqlRaw(command);
-                                context.SeedingEntries.Add(new SeedData.Entities.SeedingEntry() { Name = file.LogicalFile });
-                                context.SaveChanges();
-                                transaction.Commit();
-                            }
-                            catch
-                            {
-                                transaction.Rollback();
-                                throw;
-                            }
-                        }
-
+                         return command;
                     }
-                }
-            }
+            return "";
         }
     }
 

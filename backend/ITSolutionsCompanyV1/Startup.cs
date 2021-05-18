@@ -15,6 +15,13 @@ using Microsoft.Extensions.Hosting;
 using ITSolutionsCompanyV1.Models;
 using UserService.Data;
 using ITSolutionsCompanyV1.Data.Extensions;
+using ITSolutionsCompanyV1.Service.ApplicationUserService;
+using ITSolutionsCompanyV1.Repositories.ApplicationUserRepository;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using System.Buffers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ITSolutionsCompanyV1
 {
@@ -30,11 +37,16 @@ namespace ITSolutionsCompanyV1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            /*services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));*/
-
             services.AddEmployeesDbContext(Configuration);
+
+            services.AddControllers()
+     .AddNewtonsoftJson(options =>
+     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+ );
+
+            services.AddScoped<IApplicationUserService, ApplicationUserService>();
+
+            services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -58,18 +70,15 @@ namespace ITSolutionsCompanyV1
                 app.UseHsts();
             }
             app.UseAuthentication();
-            app.AddTriggers(Configuration);
             MyIdentityDataInitializer.SeedUsersAndRoles(userManager, roleManager);
-            app.SeedData(Configuration);
+            app.ExecuteSqlScripts (Configuration,"Triggers");
+            app.ExecuteSqlScripts(Configuration, "SeedData");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-               /* endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();*/
+                endpoints.MapControllers();
             });
         }
     }

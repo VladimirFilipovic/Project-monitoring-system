@@ -13,8 +13,8 @@ namespace ITSolutionsCompanyV1.Models
         public decimal Amount { get; set; } //TODO >0
         public string Currency { get; set; } //TODO: check whether the currency is in CurrencyType
         public bool Deleted { get; set; }
-        public Client Client { get; set; }
-        public Project Project { get; set; }
+        public virtual Client Client { get; set; }
+        public virtual Project Project { get; set; }
 
         public Payment(Guid id, DateTime date, decimal amount, string currency)
         {

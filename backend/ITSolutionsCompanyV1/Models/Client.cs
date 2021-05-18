@@ -10,8 +10,8 @@ namespace ITSolutionsCompanyV1.Models
     {
         public string CompanyName { get; set; }
         public string Pib { get; set; } //TODO: range 10000001-99999999
-        public List<Request>? Requests { get; set; }
-        public List<Payment>? Payment { get; set; }
+        public virtual List<Request>? Requests { get; set; }
+        public virtual List<Payment>? Payment { get; set; }
         public Client() : base() { }
         public Client(string companyName, string pib, Guid id, string username, string email, string phoneNumber) : base(id, username, email, phoneNumber)
         {

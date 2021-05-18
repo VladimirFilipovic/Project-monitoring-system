@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -46,21 +46,47 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Data\SqlTriggers\DropTriggers\DropAllTriggers.sql" />
+    <None Remove="Data\SqlTriggers\TrgEmployeeProject.sql" />
+    <None Remove="Data\SqlTriggers\TrgReminder.sql" />
+    <None Remove="Data\SqlTriggers\TrgTaskEmployeeTask.sql" />
+  </ItemGroup>
+
+  
+
+  <ItemGroup>
     <PackageReference Include="DataAnnotationsExtensions" Version="5.0.1.27" />
+    <PackageReference Include="linq2db" Version="3.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.15" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.13">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\SeedData\SeedScripts\" />
-    <Folder Include="Data\SqlTriggers\" />
+    <EmbeddedResource Include="Data\SqlTriggers\DropTriggers\DropAllTriggers.sql" />
+    <EmbeddedResource Include="Data\SeedData\SeedScripts\Z20210509SeedData.sql" />
+    <EmbeddedResource Include="Data\SqlTriggers\TrgEmployeeProject.sql" />
+    <EmbeddedResource Include="Data\SqlTriggers\TrgTaskEmployeeTask.sql" />
+    <EmbeddedResource Include="Data\SqlTriggers\TrgReminder.sql" />
+    <EmbeddedResource Include="Data\SqlTriggers\TrgProjectTasks.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Data\SeedData\SeedScripts\InsertSeedData.sql" />
+    <Folder Include="Repositories\DemoRepository\" />
+    <Folder Include="Repositories\ProjectRepository\" />
+    <Folder Include="Repositories\TaskRepository\" />
+    <Folder Include="Service\ProjectsService\" />
   </ItemGroup>
 
 </Project>
