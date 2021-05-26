@@ -30,7 +30,7 @@ namespace ITSolutionsCompanyV1.Controllers
             return _applicationUserService.GetAllEmployees();
         }
 
-        // GET: api/Employees/5
+        // GET: api/employees/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployee(Guid id)
         {
@@ -45,8 +45,6 @@ namespace ITSolutionsCompanyV1.Controllers
         }
 
         // PUT: api/Employees/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEmployee(Guid id, Employee employee)
         {
@@ -74,32 +72,42 @@ namespace ITSolutionsCompanyV1.Controllers
             return NoContent();
         }
 
-        // POST: api/Employees
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        // POST: api/employees
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
-            _applicationUserService.InsertEmployee(employee);
+            try
+            {
+                _applicationUserService.InsertEmployee(employee);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
 
             return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
         }
 
-        // DELETE: api/Employees/5
+        // DELETE: api/employees/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Employee>> DeleteEmployee(Guid id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = _applicationUserService.GetEmployee(id);
             if (employee == null)
             {
                 return NotFound();
             }
 
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
+            employee = _applicationUserService.DeleteEmployee(id);
 
             return employee;
         }
+
+       /// <summary>
+       /// Deactivate account
+       /// </summary>
+       /// <param name="id"></param>
+       /// <returns></returns>
 
         private bool EmployeeExists(Guid id)
         {

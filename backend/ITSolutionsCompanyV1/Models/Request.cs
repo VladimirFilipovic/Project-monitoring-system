@@ -14,9 +14,9 @@ namespace ITSolutionsCompanyV1.Models
         public bool? Accepted { get; set; }
         public bool? Deleted { get; set; }
         public byte[] Specification { get; set; } //TODO SIZE RESTRICTION FLUENT API
-        public virtual Client? Client { get; set; }
+        public Client? Client { get; set; }
         //public Guid ProjectId { get; set; }
-        public virtual Project Project { get; set; }
+        public Project Project { get; set; }
 
         public Request(Guid id, string name, DateTime? requestDate, bool? accepted, byte[] specification)
         {

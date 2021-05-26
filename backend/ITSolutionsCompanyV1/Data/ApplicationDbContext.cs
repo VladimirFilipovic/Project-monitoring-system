@@ -211,5 +211,6 @@ namespace ITSolutionsCompanyV1.Data
                 .HasColumnName("Deleted");
             #endregion
         }
+        public DbSet<ITSolutionsCompanyV1.Models.Request> Request { get; set; }
     }
 }

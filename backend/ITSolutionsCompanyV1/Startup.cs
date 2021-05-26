@@ -22,6 +22,8 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Buffers;
 using Microsoft.AspNetCore.Mvc;
+using ITSolutionsCompanyV1.Repositories.RequestRepository;
+using ITSolutionsCompanyV1.Service.RequestsService;
 
 namespace ITSolutionsCompanyV1
 {
@@ -43,10 +45,13 @@ namespace ITSolutionsCompanyV1
      .AddNewtonsoftJson(options =>
      options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
  );
-
             services.AddScoped<IApplicationUserService, ApplicationUserService>();
 
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+
+            services.AddTransient<IRequestRepository, RequestRepository>();
+
+            services.AddTransient<IRequestsService, RequestsService>();
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
