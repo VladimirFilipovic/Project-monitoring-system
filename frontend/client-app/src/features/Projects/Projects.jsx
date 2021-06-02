@@ -73,25 +73,6 @@ const ProjectsList = (props) => {
         }
       }; 
       
-    //   const deleteProject = (rowIndex: number) => {
-    //     if(projectsRef.current) {
-    //     const id = projectsRef.current[rowIndex].id;
-        
-    
-    //     ProjectsService.remove(id)
-    //       .then((response) => {
-    //         props.history.push("/tutorials");
-    
-    //         let newTutorials = [...tutorialsRef.current];
-    //         newTutorials.splice(rowIndex, 1);
-    
-    //         setTutorials(newTutorials);
-    //       })
-    //       .catch((e) => {
-    //         console.log(e);
-    //       });
-    //     }
-    //   }
 
     const columns = React.useMemo(
         () => [
@@ -150,17 +131,6 @@ const ProjectsList = (props) => {
         []
       );
 
-      
-    //   const {
-    //     getTableProps,
-    //     getTableBodyProps,
-    //     headerGroups,
-    //     rows,
-    //     prepareRow,
-    //   } = useTable({
-    //     columns,
-    //     data: projects,
-    //   });
 
     const {
       getTableProps,
@@ -239,7 +209,6 @@ const ProjectsList = (props) => {
   );
 
 }
-
 export default ProjectsList
  
 
