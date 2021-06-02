@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace ITSolutionsCompanyV1.Repositories.ProjectRepository
 {
-    interface IProjectRepository
+    public interface IProjectRepository
     {
         List<Project> GetProjects();
         Project GetProjectById(Guid id);
         void InsertProject(Project Project);
         void UpdateUser(Project project);
         Project DeleteProject(Guid id);
+        public Project GetProjectByName(String name);
     }
 }

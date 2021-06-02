@@ -8,9 +8,9 @@ export const HeroContainer = styled.div`
     justify-content: center;
     align-items: center;
     padding: 0 30px;
-    height: 800px;
+    height: 100%;
     position: relative;
-    z-index;
+    z-index:;
 `;
 
 export const HeroBg = styled.div`
@@ -46,6 +46,17 @@ export const HeroH1 = styled.div`
     font-size: 48px;
     text-align: center;
 `
+export const HeroH1Black = styled.div`
+    color: black;
+    font-size: 48px;
+    text-align: center;
+    position: relative;
+    left: 0;
+    right: 0;
+    margin-bottom: 10px;
+
+`
+
 export const HeroP = styled.p`
     margin-top: 24px;
     color: #fff;

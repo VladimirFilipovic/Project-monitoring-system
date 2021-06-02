@@ -26,5 +26,9 @@ namespace ITSolutionsCompanyV1.Models
             Accepted = accepted;
             Specification = specification;
         }
+
+        public Request()
+        {
+        }
     }
 }

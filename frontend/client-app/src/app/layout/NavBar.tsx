@@ -8,8 +8,8 @@ export default function NavBar() {
             <Container>
                 <Menu.Item as={NavLink} to='/' exact header>
                     <img src="/assets/logo.png"  alt="logo" style={{marginRight: '10px'}}/>
-                    <a href="https://www.freepik.com" title="Freepik">_</a>
-                    ITSolutions_
+                    <a href="https://www.freepik.com" title="Freepik"></a>
+                    ITSolutions
                 </Menu.Item>
                 <Menu.Item as={NavLink} to='/projects' name="Projects"/>
                 <Menu.Item>

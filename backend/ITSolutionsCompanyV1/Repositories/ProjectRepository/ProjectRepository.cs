@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace ITSolutionsCompanyV1.Repositories.ProjectRepository
 {
@@ -23,14 +25,34 @@ namespace ITSolutionsCompanyV1.Repositories.ProjectRepository
             throw new NotImplementedException();
         }
 
+         public Project GetProjectByName(String name)
+        {
+            return Query.OfType<Project>()
+                .Include(p => p.Demos)
+                .Include(p => p.Documentation)
+                .Include(p => p.EmployeeProjects)
+                .Include(p => p.Payments)
+                .Include(p => p.Tasks)
+                .Include(p => p.Request)
+                .Where(p => p.Name == name)
+                .ToList()[0];
+        }
+
         public List<Project> GetProjects()
         {
-            throw new NotImplementedException();
+            return Query.OfType<Project>()
+                .Include(p => p.Demos)
+                .Include(p => p.Documentation)
+                .Include(p => p.EmployeeProjects)
+                .Include(p => p.Payments)
+                .Include(p => p.Tasks)
+                .Include(p => p.Request)
+                .ToList();
         }
 
         public void InsertProject(Project Project)
         {
-            throw new NotImplementedException();
+            Insert(Project);
         }
 
         public void UpdateUser(Project project)

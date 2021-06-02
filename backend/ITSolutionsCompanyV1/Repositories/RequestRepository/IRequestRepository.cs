@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ITSolutionsCompanyV1.Repositories.RequestRepository
 {
-    interface IRequestRepository
+    public interface IRequestRepository
     {
         List<Request> GetRequests();
         Request GetRequestById(Guid id);

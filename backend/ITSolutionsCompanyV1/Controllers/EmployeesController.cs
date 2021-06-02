@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ITSolutionsCompanyV1.Data;
 using ITSolutionsCompanyV1.Models;
 using ITSolutionsCompanyV1.Service.ApplicationUserService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ITSolutionsCompanyV1.Controllers
 {
@@ -24,6 +25,7 @@ namespace ITSolutionsCompanyV1.Controllers
         }
 
         // GET: api/employees
+        //[Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {

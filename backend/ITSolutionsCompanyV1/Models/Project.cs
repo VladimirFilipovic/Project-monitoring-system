@@ -18,7 +18,7 @@ namespace ITSolutionsCompanyV1.Models
         public List<Demo>? Demos { get; set; }
         public List<Documentation>? Documentation { get; set; }
         public List<EmployeeProject>? EmployeeProjects { get; set; }
-        public Request Request { get; set; }
+        public Request? Request { get; set; }
 
         public Project () { }
         public Project(Guid id, string name, DateTime deadline)

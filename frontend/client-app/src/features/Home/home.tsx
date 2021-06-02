@@ -12,11 +12,11 @@ export default function Requests() {
     }
 
     return (
-        <HeroContainer className="no-scroll">
-            <HeroBg className="no-scroll">
+        <HeroContainer >
+            <HeroBg >
                 <VideoBg autoPlay loop muted src="/assets/video.mp4"/>
             </HeroBg>
-            <HeroContent className="no-scroll">
+            <HeroContent >
                 <HeroH1> Your projects made easy </HeroH1>
                 <HeroP>Send your request and sit back and enjoy</HeroP>
                 <HeroBtnWrapper>

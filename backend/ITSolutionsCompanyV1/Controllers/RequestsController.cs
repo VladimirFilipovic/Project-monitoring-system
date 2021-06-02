@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ITSolutionsCompanyV1.Data;
 using ITSolutionsCompanyV1.Models;
-using ITSolutionsCompanyV1.Service.RequestsService;
 
 namespace ITSolutionsCompanyV1.Controllers
 {
@@ -16,18 +15,17 @@ namespace ITSolutionsCompanyV1.Controllers
     public class RequestsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly IRequestsService _requestsService;
 
-        public RequestsController(IRequestsService requestsService)
+        public RequestsController(ApplicationDbContext context)
         {
-            _requestsService = requestsService;
+            _context = context;
         }
 
-        // GET: api/requests
+        // GET: api/Requests
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Request>>> GetRequest()
         {
-            return _requestsService.GetAllRequests();
+            return await _context.Request.ToListAsync();
         }
 
         // GET: api/Requests/5

@@ -1,16 +1,22 @@
+import { Project } from './../models/ProjectModels';
 import http from "../http-common";
 
-const getAll = () => {
+const getAll = (): Promise<Project[]> => {
   return http.get("/projects");
 };
 
-const get = (id: string) => {
+const get = (id: string):Promise<Project> => {
   return http.get(`/projects/${id}`);
 };
 
-// const create = (data: string) => {
-//   return http.post("/projects", data);
-// };
+const getByName = (name: string):Promise<Project[]> => {
+  return http.get(`/projects?name=${name}`)
+  //ovde cemo da isfiltriramo i da vratimo by name ssss
+};
+
+const create = (data: any) => {
+  return http.post("/projects/", data);
+};
 
 // const update = (id, data) => {
 //   return http.put(`/projects/${id}`, data);
@@ -22,8 +28,9 @@ const get = (id: string) => {
 
 const projectservice = {
   getAll,
-  get
-  // create,
+  get,
+  getByName,
+  create
   // update,
   // remove
 };

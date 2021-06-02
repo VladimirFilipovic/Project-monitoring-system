@@ -7,25 +7,41 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ITSolutionsCompanyV1.Data;
 using ITSolutionsCompanyV1.Models;
+using ITSolutionsCompanyV1.Service.ProjectsService;
+using ITSolutionsCompanyV1.Models.Dto;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ITSolutionsCompanyV1.Controllers
 {
-    [Route("api/[controller]")]
+    [AllowAnonymous]
+    [Route("api/projects")]
     [ApiController]
     public class ProjectsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IProjectsService _projectService;
+        private readonly IMapper _mapper;
 
-        public ProjectsController(ApplicationDbContext context)
+        public ProjectsController(ApplicationDbContext context, IProjectsService projectService, IMapper mapper)
         {
             _context = context;
+            _projectService = projectService;
+            _mapper = mapper;
         }
 
         // GET: api/Projects
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Project>>> GetProjects()
+        public async Task<ActionResult<IEnumerable<Project>>> GetProjects(string? name)
         {
-            return await _context.Projects.ToListAsync();
+            List<Project> projects = new List<Project>();
+
+            if(name != null) 
+            {
+                projects.Add(_projectService.GetByName(name));
+                return projects;
+            }
+            return _projectService.GetAllProjects();
         }
 
         // GET: api/Projects/5
@@ -74,30 +90,22 @@ namespace ITSolutionsCompanyV1.Controllers
             return NoContent();
         }
 
-        // POST: api/Projects
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        // POST: api/rojects
         [HttpPost]
-        public async Task<ActionResult<Project>> PostProject(Project project)
+        public async Task<IActionResult> PostProject(ProjectDto project)
         {
-            _context.Projects.Add(project);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (ProjectExists(project.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var string64 = project.Request.Specification;
+            var string64fixed = string64.Substring(string64.LastIndexOf(',') + 1);
+            byte[] newBytes = Convert.FromBase64String(string64fixed);
 
-            return CreatedAtAction("GetProject", new { id = project.Id }, project);
+            Request request = _mapper.Map<Request>(project.Request);
+            request.Specification = newBytes;
+
+            Project projectEntity = _mapper.Map<Project>(project);
+            projectEntity.Request = request;
+
+            _projectService.InsertProject(projectEntity);
+            return NoContent();
         }
 
         // DELETE: api/Projects/5
