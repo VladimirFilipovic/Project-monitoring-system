@@ -1,8 +1,14 @@
-import { Project } from './../models/ProjectModels';
+import { store } from '../stores/store';
 import http from "../http-common";
+import { Project } from './../models/ProjectModels';
 
 const getAll = (): Promise<Project[]> => {
-  return http.get("/users");
+  const config = {
+    headers: {
+      Authorization: 'Bearer ' + store.commonStore.token
+    }
+  }
+  return http.get("/users",config);
 };
 
 const get = (id: string):Promise<Project> => {
@@ -15,12 +21,21 @@ const getByName = (name: string):Promise<Project[]> => {
 };
 
 const register = (data: any) => {
-  return http.post("/users/", data);
+  return http.post("/users/register", data);
 };
 
 const login = (data: any) => {
     return http.post("/users/login/", data);
   };
+
+ const current = () => {
+  const config = {
+    headers: {
+      Authorization: 'Bearer ' + store.commonStore.token
+    }
+  }
+   return http.get("/users", config);
+ }
 
 // const update = (id, data) => {
 //   return http.put(`/users/${id}`, data);
@@ -35,7 +50,8 @@ const userservice = {
   get,
   getByName,
   register,
-  login
+  login,
+  current
   // update,
   // remove
 };

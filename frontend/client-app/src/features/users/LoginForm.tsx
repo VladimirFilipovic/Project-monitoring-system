@@ -14,9 +14,7 @@ export default observer(function LoginForm() {
             initialValues={{email: '', password: '', error: null}}
             onSubmit={(values,actions) => {
                 try {
-                    console.log("hi")
                     let user =userStore.login(values)
-                    console.log(user)
                     if (!user) {
                         actions.setErrors({error: 'Invalid email or password'})
                         actions.setSubmitting(false)

@@ -1,8 +1,15 @@
+import { observable } from 'mobx';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Button, Container, Menu } from 'semantic-ui-react';
+import { Link, NavLink } from 'react-router-dom';
+import { Button, Container, Menu, Image, Dropdown } from 'semantic-ui-react';
+import { useStore } from '../../stores/store';
 
-export default function NavBar() {
+export default observer (function NavBar() {
+    const { userStore: { user, logout, getUser} } = useStore();
+    const { commonStore: { token} } = useStore();
+    
+
     return (
         <Menu inverted fixed='top'>
             <Container>
@@ -11,11 +18,23 @@ export default function NavBar() {
                     <a href="https://www.freepik.com" title="Freepik"></a>
                     ITSolutions
                 </Menu.Item>
-                <Menu.Item as={NavLink} to='/projects' name="Projects"/>
+               
+                {token &&
+                <>
+                 <Menu.Item as={NavLink} to='/projects' name="Projects"/>
                 <Menu.Item>
                     <Button as={NavLink} to='/requests' positive content='Send new request' />
                 </Menu.Item>
+                <Menu.Item position='right'>
+                    <Image src={'/assets/user.png'} avatar spaced='right' />
+                    <Dropdown pointing='top left' text={user?.username}>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={logout} text='Logout' icon='power' />
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Menu.Item>
+                </>}
             </Container>
         </Menu>
     )
-}
+})

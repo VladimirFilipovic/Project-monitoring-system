@@ -5,6 +5,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { store } from "./store";
 import { User } from '../models/User';
 import userservice from '../services/UserService';
+import { Register } from '../models/RegisterModel';
 
 export default class UserStore {
     user: User | null = null;
@@ -22,12 +23,13 @@ export default class UserStore {
             let user: User;
             userservice.login(creds).then((res) => {
                 user = res.data
+                this.user = user;
                 if(user.token)
                 store.commonStore.setToken(user.token);
                 // this.startRefreshTokenTimer(user);
                 runInAction(() => this.user = user);
                 history.push('/requests');
-                // store.modalStore.closeModal();
+                store.modalStore.closeModal();
                 return user
             }).catch(error => {
                 console.log('hey')
@@ -36,6 +38,7 @@ export default class UserStore {
             })
     }
 
+
     logout = () => {
         store.commonStore.setToken(null);
         window.localStorage.removeItem('jwt');
@@ -43,26 +46,33 @@ export default class UserStore {
         history.push('/');
     }
 
-    // getUser = async () => {
-    //     try {
-    //         const user = await agent.Account.current();
-    //         store.commonStore.setToken(user.token);
-    //         runInAction(() => this.user = user);
-    //         this.startRefreshTokenTimer(user);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
+    getUser =  ():any => {
+        console.log('get user')
+        try {
+            userservice.current().then(res => {
+                let user:User = res.data
+                store.commonStore.setToken(user.token!);
+                runInAction(() => this.user = user);
+                // this.startRefreshTokenTimer(user);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-    // register = async (creds: UserFormValues) => {
-    //     try {
-    //         await agent.Account.register(creds);
-    //         history.push(`/account/registerSuccess?email=${creds.email}`);
-    //         store.modalStore.closeModal();
-    //     } catch (error) {
-    //         throw error;
-    //     }
-    // }
+    register = (creds: Register) => {
+       return userservice.register(creds).then(res => {
+                runInAction(() => this.user = res.data);
+                store.commonStore.setToken(res.data.token!);
+                store.modalStore.closeModal();
+                history.push(`/`);
+                console.log(res)
+            }).catch(error => {
+                console.log(error)
+                throw error
+            })
+           
+    }
 
     // setImage = (image: string) => {
     //     if (this.user) this.user.image = image;
