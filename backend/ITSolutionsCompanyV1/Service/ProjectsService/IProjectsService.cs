@@ -13,5 +13,6 @@ namespace ITSolutionsCompanyV1.Service.ProjectsService
         public void InsertProject(Project Project);
         public Project DeleteProject(Guid id);
         public Project GetByName(String name);
+        public Project GetById(Guid id);
     }
 }

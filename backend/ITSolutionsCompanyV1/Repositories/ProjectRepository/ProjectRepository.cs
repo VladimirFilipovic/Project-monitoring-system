@@ -22,7 +22,17 @@ namespace ITSolutionsCompanyV1.Repositories.ProjectRepository
 
         public Project GetProjectById(Guid id)
         {
-            throw new NotImplementedException();
+            return Query.OfType<Project>()
+                .Include(p => p.Demos)
+                .Include(p => p.Documentation)
+                .Include(p => p.EmployeeProjects)
+                .Include(p => p.Payments)
+                .ThenInclude(payment => payment.Client)
+                .Include(p => p.Tasks)
+                .ThenInclude(t => t.EmployeeTasks)
+                .Include(p => p.Request)
+                .Include(p => p.Documentation).Where(p => p.Id == id)
+                .SingleOrDefault();
         }
 
          public Project GetProjectByName(String name)

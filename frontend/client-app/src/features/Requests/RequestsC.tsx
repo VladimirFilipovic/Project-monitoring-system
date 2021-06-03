@@ -16,6 +16,9 @@ import projectsService from "../../services/ProjectsService";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 import { string } from "yup/lib/locale";
+import { useHistory } from "react-router-dom";
+import { history } from '../../index';
+
 
 interface Props {
   request: Request | undefined;
@@ -111,6 +114,7 @@ export default function RequestsC({ closeForm }: Props) {
         .create(project)
         .then((res) => {
           console.log(res);
+          history.push('/');
         })
         .catch((e) => {
           console.log(e);

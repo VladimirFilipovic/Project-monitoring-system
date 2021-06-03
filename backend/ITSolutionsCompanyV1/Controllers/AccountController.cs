@@ -124,11 +124,13 @@ namespace ITSolutionsCompanyV1.Controllers
         {
             if(await _userManager.Users.AnyAsync(x=> x.Email == applicationUser.Email))
             {
-                return BadRequest("Email taken");
+                ModelState.AddModelError("email", "Email taken");
+                return ValidationProblem();
             }
             if (await _userManager.Users.AnyAsync(x => x.UserName == applicationUser.UserName))
             {
-                return BadRequest("Username taken");
+                ModelState.AddModelError("username", "Username taken");
+                return ValidationProblem();
             }
 
             var user = new Client

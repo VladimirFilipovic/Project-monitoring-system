@@ -25,6 +25,11 @@ namespace ITSolutionsCompanyV1.Service.ProjectsService
             return _projectsRepository.GetProjects();
         }
 
+        public Project GetById(Guid id)
+        {
+            return _projectsRepository.GetProjectById(id);
+        }
+
         public Project GetByName(string name)
         {
             return _projectsRepository.GetProjectByName(name);

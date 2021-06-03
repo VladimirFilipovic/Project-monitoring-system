@@ -48,7 +48,7 @@ namespace ITSolutionsCompanyV1.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Project>> GetProject(Guid id)
         {
-            var project = await _context.Projects.FindAsync(id);
+            var project = _projectService.GetById(id);
 
             if (project == null)
             {

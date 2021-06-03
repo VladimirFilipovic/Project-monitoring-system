@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace ITSolutionsCompanyV1.Controllers
 {
     [Route("api/employees")]
+    [AllowAnonymous]
     [ApiController]
     public class EmployeesController : ControllerBase
     {

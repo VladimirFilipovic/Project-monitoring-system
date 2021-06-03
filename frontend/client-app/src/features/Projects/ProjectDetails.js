@@ -11,14 +11,18 @@ import DocumentationTable from './DocumentationTable'
 import UpdateTwoToneIcon from '@material-ui/icons/UpdateTwoTone';
 import PaymentsTable from './PaymentsTable';
 import TasksTable from './TasksTable'
+import { observer } from 'mobx-react-lite';
 import TaskForm from './TaskForm'
 import {v4 as uuidv4} from 'uuid'
+import { useStore } from '../../stores/store';
 
-export default function ProjectDetails(props) {
+
+export default observer (function ProjectDetails(props) {
 
     const [project, setProject] = useState();
     const [openPopup, setOpenPopup] = useState(false);
-
+    const { userStore: { user, logout, getUser} } = useStore();
+    const { commonStore: { token} } = useStore();
 
     useEffect(() => {
         let id = props.match.params['id'];
@@ -111,6 +115,7 @@ export default function ProjectDetails(props) {
                 Documentation:
             </Typography>
             {project.documentation && <DocumentationTable documentation={project.documentation}></DocumentationTable>}
+            {user?.username==="admin" && <>
             <Typography variant="subtitle1" style={{marginTop:'2em'}}>
                 Payments:
             </Typography>
@@ -126,7 +131,7 @@ export default function ProjectDetails(props) {
                 </Grid>
            </Grid>
             {project.tasks && <TasksTable tasks={project.tasks}></TasksTable>}
-            
+            </>}
         </Grid>
         </Paper>
         </Grid>
@@ -139,4 +144,4 @@ export default function ProjectDetails(props) {
         </Popup>
         </>
     )
-}
+})

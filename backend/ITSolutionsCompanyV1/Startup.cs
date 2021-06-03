@@ -66,8 +66,16 @@ namespace ITSolutionsCompanyV1
             //services.AddTransient<IRequestRepository, RequestRepository>();
 
             //services.AddTransient<IRequestsService, RequestsService>();
-                
-         
+
+            services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddScoped<ITasksRepository, TasksRepository>();
+            services.AddScoped<ITasksService, TasksService>();
+
+            services.AddAutoMapper(typeof(Startup).Assembly);
+
+            services.AddScoped<IProjectsService, ProjectsService>();
+
+            services.AddScoped<IEmployeeTaskRepository, EmployeeTaskRepository>();
 
             services.AddScoped<IProjectsService, ProjectsService>();
 
